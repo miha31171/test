@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>DayFlow</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app" id="app">
+      <header class="topbar">
+        <div>
+          <h1 id="screenTitle">Мой день</h1>
+          <p id="screenSubtitle">Загрузка…</p>
+        </div>
+        <div class="progress" id="progress"></div>
+      </header>
+
+      <section id="screen-day" class="screen active">
+        <section class="group">
+          <div class="group-head"><h2>🔥 Сейчас <small>до 3 задач</small></h2><span id="nowCount"></span></div>
+          <div id="nowList" class="task-list"></div>
+        </section>
+        <section class="group">
+          <div class="group-head"><h2>☀️ Сегодня</h2><span id="todayCount"></span></div>
+          <div id="todayList" class="task-list"></div>
+        </section>
+        <button class="secondary full" data-go="tasks">▦ Все задачи →</button>
+      </section>
+
+      <section id="screen-tasks" class="screen">
+        <div class="segmented"><button class="active" data-task-view="dates">По срокам</button><button data-task-view="matrix">Эйзенхауэр</button></div>
+        <div id="allTasks"></div>
+      </section>
+
+      <section id="screen-projects" class="screen">
+        <div id="projects"></div>
+      </section>
+
+      <section id="screen-project-detail" class="screen">
+        <button class="link-btn" id="projectBack">← Проекты</button>
+        <div class="project-head"><div><h2 id="projectTitle"></h2><p id="projectMeta"></p></div><strong id="projectProgress"></strong></div>
+        <div id="projectTasks"></div>
+      </section>
+
+      <div class="quick-actions">
+        <button class="secondary" id="addBtn">＋ Добавить</button>
+        <button class="primary" id="voiceBtn">🎙 Сказать задачу</button>
+      </div>
+
+      <div class="toast hidden" id="toast"><div><strong>✓ Задача создана</strong><span id="toastText"></span></div><button id="undoBtn">Отменить</button></div>
+
+      <nav class="bottom-nav">
+        <button class="active" data-nav="day">☀️<span>День</span></button>
+        <button data-nav="tasks">▦<span>Задачи</span></button>
+        <button data-nav="projects">📁<span>Проекты</span></button>
+      </nav>
+    </main>
+  </div>
+
+  <dialog id="taskDialog">
+    <form method="dialog" id="taskForm" class="dialog-card">
+      <div class="dialog-title"><h2 id="taskDialogTitle">Новая задача</h2><button type="button" id="taskDialogClose" class="icon-btn" aria-label="Закрыть">×</button></div>
+      <label>Что нужно сделать?<input id="taskName" maxlength="300" required></label>
+      <div class="field-grid"><label>Срок<select id="taskDue"><option value="today">Сегодня</option><option value="tomorrow">Завтра</option><option value="week">На этой неделе</option><option value="later">Позже</option><option value="none">Без срока</option></select></label><label>Тип<select id="taskArea"><option>Работа</option><option>Личное</option></select></label></div>
+      <label>Проект<input id="taskProject" maxlength="120" placeholder="Необязательно"></label>
+      <label>Эйзенхауэр<select id="taskPriority"><option value="urgent-important">🔥 Срочно + важно</option><option value="important">📌 Важно + не срочно</option><option value="urgent">⚡ Срочно + неважно</option><option value="low">💭 Не срочно + неважно</option></select></label>
+      <div class="dialog-actions"><button type="button" id="taskCancel" class="secondary">Отмена</button><button type="submit" id="taskSave" class="primary">Сохранить</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="actionDialog"><div class="dialog-card"><div class="dialog-title"><h2 id="actionTitle">Задача</h2><button id="actionClose" class="icon-btn">×</button></div><button id="toggleNow" class="secondary full"></button><h3>Срок</h3><div class="action-grid"><button data-set-due="today">Сегодня</button><button data-set-due="tomorrow">Завтра</button><button data-set-due="week">На неделе</button><button data-set-due="later">Позже</button></div><button id="editTask" class="secondary full">📝 Редактировать</button><button id="deleteTask" class="danger full">🗑 Удалить</button></div></dialog>
+
+  <dialog id="voiceDialog">
+    <div class="dialog-card voice-card">
+      <button id="voiceClose" class="icon-btn voice-close">×</button>
+      <div class="mic" id="micIcon">🎙</div>
+      <h2 id="voiceTitle">Говорите</h2>
+      <p id="voiceStatus">Например: «Завтра срочно позвонить Сергею по стоматологии»</p>
+      <div class="voice-transcript" id="voiceTranscript">…</div>
+      <button id="stopRecord" class="primary full hidden">Завершить запись</button>
+      <button id="manualVoice" class="secondary full hidden">Ввести текст вручную</button>
+    </div>
+  </dialog>
+
+  <dialog id="manualDialog"><form class="dialog-card" id="manualForm"><div class="dialog-title"><h2>Фраза задачи</h2><button type="button" id="manualClose" class="icon-btn">×</button></div><textarea id="manualText" rows="4" placeholder="Завтра срочно позвонить Сергею по стоматологии"></textarea><div class="dialog-actions"><button type="button" id="manualCancel" class="secondary">Отмена</button><button type="submit" class="primary">Создать</button></div></form></dialog>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
