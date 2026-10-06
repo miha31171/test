@@ -1,0 +1,12 @@
+{
+  "name": "DayFlow — Мои дела",
+  "short_name": "DayFlow",
+  "description": "Простой ежедневный задачник: Сейчас, Сегодня, Эйзенхауэр и проекты.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f8",
+  "theme_color": "#111827",
+  "icons": [
+    {"src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}
